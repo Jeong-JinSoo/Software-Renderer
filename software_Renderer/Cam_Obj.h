@@ -9,5 +9,6 @@ public:
 	~Cam_Obj();
 
 	virtual void Update() override;
+	void ExtractCameraParams(Matrix mat, Point& pos, Point& tar, Point& up);
 };
 

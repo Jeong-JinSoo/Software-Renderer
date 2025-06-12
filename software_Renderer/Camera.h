@@ -7,7 +7,7 @@ public:
 	Camera();
 	~Camera();
 public:
-	void Update(bool isobj);
+	void Update();
 
 	void LookAt(Point camPos, Point target, Point worldUp);	// 카메라 기본 세팅
 
@@ -15,7 +15,6 @@ public:
 	void SetViewPort(float hight, float length);
 
 	void ClacViewMatrix();
-	void ClacViewMatrix_Obj(Transform world);
 	void ClacProjectionMatrix();
 
 	Matrix GetView();

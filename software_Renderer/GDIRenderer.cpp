@@ -28,8 +28,8 @@ void GDIRenderer::Initialize()
 	objects.push_back(new Grid());
 	objects.push_back(new Axis_Widget());
 
-	cam.pcam->LookAt(Point(0, 5, 10), Point(0, 0, 0), Point(0, 1, 0));
-	//cam.transform.SetPosition(0, 1, 5);
+	cam.pcam->LookAt(Point(0, 5, -10), Point(0, 0, 0), Point(0, 1, 0));
+	//cam.transform.SetPosition(0, 5, 10);
 	//cam.transform.SetRotation(0, 0, 0);
 
 	for (auto obj : objects)
@@ -43,7 +43,7 @@ void GDIRenderer::Initialize()
 	objects[0]->transform.SetPosition(0, 0, 0);
 
 	// axis_Widget
-	objects[2]->transform.SetPosition(0, 0, -3);
+	objects[2]->transform.SetPosition(-3, 0, 0);
 
 	/// 레스터 라이저를 더하면서 새로 추가된 프레임 버퍼&뎁스 버퍼
 
@@ -84,12 +84,13 @@ void GDIRenderer::Render()
 	Inputer();
 
 	//cube.transform.SetPosition(posx, posy, 0);
-	//objects[0]->transform.SetPosition(controlvaluex, controlvaluey, controlvaluez);
+	objects[0]->transform.SetPosition(controlvaluex, controlvaluey, controlvaluez);
 	//objects[0]->transform.SetScale(controlvaluex, controlvaluey, controlvaluez);
-	objects[0]->transform.SetRotation(controlvaluex, controlvaluey, controlvaluez);
+	objects[0]->transform.SetRotation(controlrot1, controlrot2, controlrot3);
 
 	//cam.pcam->LookAt(Point(controlvaluex, controlvaluey, controlvaluez),Point(),Point(0,1,0));
-	//cam.transform.SetRotation(controlvaluex, controlvaluey, controlvaluez);
+	//cam.transform.SetPosition(controlvaluex, controlvaluey, controlvaluez);
+	//cam.transform.SetRotation(controlrot1, controlrot2, controlrot3);
 	
 
 	cam.Update();
@@ -184,7 +185,8 @@ void GDIRenderer::Render()
 	
 	Point viewport = cam.pcam->GetViewPortLH();
 	DrawTextM(10, 10, L"Viewport x : %f, y %f", viewport.x, viewport.y);
-	DrawTextM(10, 30, L"control value : x:%f, y:%f, z:%f", controlvaluex, controlvaluey, controlvaluez);
+	DrawTextM(10, 30, L"pos : x:%f, y:%f, z:%f", controlvaluex, controlvaluey, controlvaluez);
+	DrawTextM(10, 50, L"rot : x:%f, y:%f, z:%f", controlrot1, controlrot2, controlrot3);
 }
 
 void GDIRenderer::BeginRender()
@@ -320,33 +322,64 @@ void GDIRenderer::DrawTextM(float xpos, float ypos, const wchar_t* format, ...)
 
 void GDIRenderer::Inputer()
 {
-	input->Update(0.0);
+	float deltatime = 0.0167;
+	float speed = 10 * deltatime;
+	input->Update(deltatime);
 
+	if (input->KeyInput(KEY::Q))
+	{
+		controlvaluey += speed;
+	}
+	else if (input->KeyInput(KEY::E))
+	{
+		controlvaluey -= speed;
+	}
+
+	if (input->KeyInput(KEY::A))
+	{
+		controlvaluex -= speed;
+	}
+	else if (input->KeyInput(KEY::D))
+	{
+		controlvaluex += speed;
+	}
+
+	if (input->KeyInput(KEY::W))
+	{
+		controlvaluez += speed;
+	}
+	else if (input->KeyInput(KEY::S))
+	{
+		controlvaluez -= speed;
+	}
+
+	// x축 (상하회전)
 	if (input->KeyInput(KEY::UP))
 	{
-		controlvaluey += 1;
+		controlrot1 += 1;
 	}
 	else if (input->KeyInput(KEY::DOWN))
 	{
-		controlvaluey -= 1;
+		controlrot1 -= 1;
 	}
 
+	// y축 (회전)
 	if (input->KeyInput(KEY::LEFT))
 	{
-		controlvaluex -= 1;
+		controlrot2 += 1;
 	}
 	else if (input->KeyInput(KEY::RIGHT))
 	{
-		controlvaluex += 1;
+		controlrot2 -= 1;
 	}
 
+	// z축 (좌우 회전)
 	if (input->KeyInput(KEY::HOME))
 	{
-		controlvaluex -= 1;
+		controlrot3 += 1;
 	}
 	else if (input->KeyInput(KEY::END))
 	{
-		controlvaluex += 1;
+		controlrot3 -= 1;
 	}
-
 }

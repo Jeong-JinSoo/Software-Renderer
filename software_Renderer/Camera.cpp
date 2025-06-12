@@ -9,18 +9,9 @@ Camera::~Camera()
 {
 }
 
-void Camera::Update(bool isobj)
+void Camera::Update()
 {
-	if (isobj)
-	{
-		
-	}
-
-	else
-	{
-		ClacViewMatrix();
-	}
-
+	ClacViewMatrix();
 	ClacProjectionMatrix();
 }
 
@@ -77,15 +68,15 @@ void Camera::ClacProjectionMatrix()
 
 	proj = result;
 }
-                   
+
 
 void Camera::ClacViewMatrix()
 {
 	Matrix result;
 
-   	Point n = Point::Normalize(at-eye); // Z
-   	Point u = Point::Normalize(Point::Cross(n,up)); // Y
-   	Point v = Point::Cross(u, n); // X
+	Point n = Point::Normalize(at - eye); // Z
+	Point u = Point::Normalize(Point::Cross(n, up)); // Y
+	Point v = Point::Cross(u, n); // X
 
 	result = {
 						 u.x,					   v.x,						   n.x,		0
@@ -95,13 +86,6 @@ void Camera::ClacViewMatrix()
 	};
 	view = result;
 	return;
-}
-
-void Camera::ClacViewMatrix_Obj(Transform world)
-{
-	Matrix result = world.GetTransformMatrix();
-	//result.inverseMatrix();
-	view = result;
 }
 
 Matrix Camera::GetView()

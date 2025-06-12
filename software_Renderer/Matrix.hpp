@@ -31,7 +31,8 @@ struct Point
 		return Point(x - rhs.x, y - rhs.y, z - rhs.z, w);
 	}
 	// Point * scalar
-	Point operator*(float s) const {
+	Point operator*(float s) const
+	{
 		return Point(x * s, y * s, z * s, w);
 	}
 
@@ -39,17 +40,20 @@ struct Point
 	Point operator*(const Matrix& m) const;
 
 	// 단위벡터화(정규화)
-	static Point Normalize(const Point& p) {
+	static Point Normalize(const Point& p)
+	{
 		float len = std::sqrt(p.x * p.x + p.y * p.y + p.z * p.z);
 		if (len > 1e-8f) return Point(p.x / len, p.y / len, p.z / len, p.w);
 		return p;
 	}
 	// 내적
-	static float Dot(const Point& a, const Point& b) {
+	static float Dot(const Point& a, const Point& b)
+	{
 		return a.x * b.x + a.y * b.y + a.z * b.z;
 	}
 	// 외적
-	static Point Cross(const Point& a, const Point& b) {
+	static Point Cross(const Point& a, const Point& b)
+	{
 		return Point(
 			a.y * b.z - a.z * b.y,
 			a.z * b.x - a.x * b.z,
@@ -75,7 +79,8 @@ struct Matrix
 	};
 
 
-	Matrix() { // 단위행렬
+	Matrix()
+	{ // 단위행렬
 		for (int i = 0; i < 4; ++i) for (int j = 0; j < 4; ++j) m[i][j] = (i == j) ? 1.0f : 0.0f;
 	}
 
@@ -134,24 +139,57 @@ struct Matrix
 		return t;
 	}
 
-	// 행벡터기준 역행렬(생략, 필요하면 구현)
-	Matrix Inverse()
+	Matrix Inverse() const
 	{
-		return Matrix();
-	};
+		float det = ((a4 * b3 * c2 * d1) - (a3 * b4 * c2 * d1) - (a4 * b2 * c3 * d1) + (a2 * b4 * c3 * d1) + (a3 * b2 * c4 * d1)
+			- (a2 * b3 * c4 * d1) - (a4 * b3 * c1 * d2) + (a3 * b4 * c1 * d2) + (a4 * b1 * c3 * d2) - (a1 * b4 * c3 * d2)
+			- (a3 * b1 * c4 * d2) + (a1 * b3 * c4 * d2) + (a4 * b2 * c1 * d3) - (a2 * b4 * c1 * d3) - (a4 * b1 * c2 * d3)
+			+ (a1 * b4 * c2 * d3) + (a2 * b1 * c4 * d3) - (a1 * b2 * c4 * d3) - (a3 * b2 * c1 * d4) + (a2 * b3 * c1 * d4)
+			+ (a3 * b1 * c2 * d4) - (a1 * b3 * c2 * d4) - (a2 * b1 * c3 * d4) + (a1 * b2 * c3 * d4));
 
-	// 행렬식(Determinant) (생략, 필요하면 구현)
-	float GetDeterminant()
+		if (std::abs(det) < 1e-6) {
+			return Matrix();
+		}
+
+		Matrix inverse;
+
+		inverse.a1 = (b2 * c3 * d4 - b2 * c4 * d3 - b3 * c2 * d4 + b3 * c4 * d2 + b4 * c2 * d3 - b4 * c3 * d2) / det;
+		inverse.a2 = -(a2 * c3 * d4 - a2 * c4 * d3 - a3 * c2 * d4 + a3 * c4 * d2 + a4 * c2 * d3 - a4 * c3 * d2) / det;
+		inverse.a3 = (a2 * b3 * d4 - a2 * b4 * d3 - a3 * b2 * d4 + a3 * b4 * d2 + a4 * b2 * d3 - a4 * b3 * d2) / det;
+		inverse.a4 = -(a2 * b3 * c4 - a2 * b4 * c3 - a3 * b2 * c4 + a3 * b4 * c2 + a4 * b2 * c3 - a4 * b3 * c2) / det;
+
+		inverse.b1 = -(b1 * c3 * d4 - b1 * c4 * d3 - b3 * c1 * d4 + b3 * c4 * d1 + b4 * c1 * d3 - b4 * c3 * d1) / det;
+		inverse.b2 = (a1 * c3 * d4 - a1 * c4 * d3 - a3 * c1 * d4 + a3 * c4 * d1 + a4 * c1 * d3 - a4 * c3 * d1) / det;
+		inverse.b3 = -(a1 * b3 * d4 - a1 * b4 * d3 - a3 * b1 * d4 + a3 * b4 * d1 + a4 * b1 * d3 - a4 * b3 * d1) / det;
+		inverse.b4 = (a1 * b3 * c4 - a1 * b4 * c3 - a3 * b1 * c4 + a3 * b4 * c1 + a4 * b1 * c3 - a4 * b3 * c1) / det;
+
+		inverse.c1 = (b1 * c2 * d4 - b1 * c4 * d2 - b2 * c1 * d4 + b2 * c4 * d1 + b4 * c1 * d2 - b4 * c2 * d1) / det;
+		inverse.c2 = -(a1 * c2 * d4 - a1 * c4 * d2 - a2 * c1 * d4 + a2 * c4 * d1 + a4 * c1 * d2 - a4 * c2 * d1) / det;
+		inverse.c3 = (a1 * b2 * d4 - a1 * b4 * d2 - a2 * b1 * d4 + a2 * b4 * d1 + a4 * b1 * d2 - a4 * b2 * d1) / det;
+		inverse.c4 = -(a1 * b2 * c4 - a1 * b4 * c2 - a2 * b1 * c4 + a2 * b4 * c1 + a4 * b1 * c2 - a4 * b2 * c1) / det;
+
+		inverse.d1 = -(b1 * c2 * d3 - b1 * c3 * d2 - b2 * c1 * d3 + b2 * c3 * d1 + b3 * c1 * d2 - b3 * c2 * d1) / det;
+		inverse.d2 = (a1 * c2 * d3 - a1 * c3 * d2 - a2 * c1 * d3 + a2 * c3 * d1 + a3 * c1 * d2 - a3 * c2 * d1) / det;
+		inverse.d3 = -(a1 * b2 * d3 - a1 * b3 * d2 - a2 * b1 * d3 + a2 * b3 * d1 + a3 * b1 * d2 - a3 * b2 * d1) / det;
+		inverse.d4 = (a1 * b2 * c3 - a1 * b3 * c2 - a2 * b1 * c3 + a2 * b3 * c1 + a3 * b1 * c2 - a3 * b2 * c1) / det;
+
+		return inverse;
+	}
+
+	float GetDeterminant() const
 	{
-	
-	};
-
-	// (보통은 변환행렬에만 사용)  
-	// ... (기타 필요시 추가)
+		float det = ((a4 * b3 * c2 * d1) - (a3 * b4 * c2 * d1) - (a4 * b2 * c3 * d1) + (a2 * b4 * c3 * d1) + (a3 * b2 * c4 * d1)
+			- (a2 * b3 * c4 * d1) - (a4 * b3 * c1 * d2) + (a3 * b4 * c1 * d2) + (a4 * b1 * c3 * d2) - (a1 * b4 * c3 * d2)
+			- (a3 * b1 * c4 * d2) + (a1 * b3 * c4 * d2) + (a4 * b2 * c1 * d3) - (a2 * b4 * c1 * d3) - (a4 * b1 * c2 * d3)
+			+ (a1 * b4 * c2 * d3) + (a2 * b1 * c4 * d3) - (a1 * b2 * c4 * d3) - (a3 * b2 * c1 * d4) + (a2 * b3 * c1 * d4)
+			+ (a3 * b1 * c2 * d4) - (a1 * b3 * c2 * d4) - (a2 * b1 * c3 * d4) + (a1 * b2 * c3 * d4));
+		return det;
+	}
 };
 
 // 행벡터 × 행렬 연산 (Point * Matrix)
-inline Point Point::operator*(const Matrix& mat) const {
+inline Point Point::operator*(const Matrix& mat) const
+{
 	Point res;
 	res.x = x * mat.m[0][0] + y * mat.m[1][0] + z * mat.m[2][0] + w * mat.m[3][0];
 	res.y = x * mat.m[0][1] + y * mat.m[1][1] + z * mat.m[2][1] + w * mat.m[3][1];
@@ -161,13 +199,15 @@ inline Point Point::operator*(const Matrix& mat) const {
 }
 
 // 행벡터용 Quaternion
-struct Quaternion {
+struct Quaternion
+{
 	float x, y, z, w;
 	Quaternion() : x(0), y(0), z(0), w(1) {}
 	Quaternion(float _x, float _y, float _z, float _w)
 		: x(_x), y(_y), z(_z), w(_w) {}
 
-	static Quaternion FromAxisAngle(const Point& axis, float angleRad) {
+	static Quaternion FromAxisAngle(const Point& axis, float angleRad)
+	{
 		float half = angleRad * 0.5f;
 		float s = sinf(half);
 		return Quaternion(
@@ -178,7 +218,8 @@ struct Quaternion {
 		);
 	}
 
-	static Quaternion FromEuler(float xRad, float yRad, float zRad) {
+	static Quaternion FromEuler(float xRad, float yRad, float zRad)
+	{
 		float cx = cosf(xRad * 0.5f);
 		float sx = sinf(xRad * 0.5f);
 		float cy = cosf(yRad * 0.5f);
@@ -194,7 +235,8 @@ struct Quaternion {
 		);
 	}
 
-	Quaternion operator*(const Quaternion& q) const {
+	Quaternion operator*(const Quaternion& q) const
+	{
 		return Quaternion(
 			w * q.x + x * q.w + y * q.z - z * q.y,
 			w * q.y - x * q.z + y * q.w + z * q.x,
@@ -203,13 +245,15 @@ struct Quaternion {
 		);
 	}
 
-	void Normalize() {
+	void Normalize()
+	{
 		float len = std::sqrt(x * x + y * y + z * z + w * w);
 		if (len > 0.0f) { x /= len; y /= len; z /= len; w /= len; }
 	}
 
 	// 행벡터용 4x4 회전행렬 변환
-	Matrix ToMatrix() const {
+	Matrix ToMatrix() const
+	{
 		float xx = x * x, yy = y * y, zz = z * z;
 		float xy = x * y, xz = x * z, yz = y * z;
 		float wx = w * x, wy = w * y, wz = w * z;

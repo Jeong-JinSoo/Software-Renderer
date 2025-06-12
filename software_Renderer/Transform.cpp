@@ -90,10 +90,10 @@ Matrix Transform::Translate()
 {
 	Matrix result;
 	result = {
-		   1,		0,		0,		posX,
-		   0,		1,		0,		posY,
-		   0,		0,		1,		posZ,
-		   0,		0,		0,		1
+		   1,		0,		0,		0,
+		   0,		1,		0,		0,
+		   0,		0,		1,		0,
+		   posX,	posY,	posZ,	1
 	};
 
 	return result;
