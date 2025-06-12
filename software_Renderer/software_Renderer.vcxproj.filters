@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Main">
+      <UniqueIdentifier>{314a7727-366b-4aaa-b60c-a6b445a855be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GdiRenderer">
+      <UniqueIdentifier>{0bf180db-7abe-4b4c-80f9-226b71d61af3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Math">
+      <UniqueIdentifier>{0363bb02-c4c8-46c6-bdc9-ac351b6d2c01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Math\Matrix">
+      <UniqueIdentifier>{75363108-f0fb-493d-80bb-63255ccdeb82}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Math\Transform">
+      <UniqueIdentifier>{e3f4cb7c-8de1-4c5a-89fa-c7e73257a6c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="InputSetting">
+      <UniqueIdentifier>{ac56de2c-b351-4bc7-a25b-e19dd0b9003f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GdiRenderer\RenderStruct">
+      <UniqueIdentifier>{cad57c1e-cfdf-42ae-a4b4-c3f53c3c10d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GdiRenderer\RenderStruct\Camera">
+      <UniqueIdentifier>{ec9cf905-c3b4-45bb-902f-4878507d083e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GdiRenderer\Rasterizer">
+      <UniqueIdentifier>{d1df76dc-eb6a-4a29-a812-78694d3e66af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GdiRenderer\RenderStruct\RenderObject">
+      <UniqueIdentifier>{1947cb1e-ac94-4940-9f4c-3caff774b35f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GdiRenderer\RenderStruct\RenderObject\Cube">
+      <UniqueIdentifier>{b1d8a46c-2eae-4b7e-b138-a86a5dbaeba9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GdiRenderer\RenderStruct\RenderObject\Grid">
+      <UniqueIdentifier>{3c6c0b35-02c3-4857-8f07-87dd5a6d2c3c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GdiRenderer\RenderStruct\RenderObject\Camera%28Object%29">
+      <UniqueIdentifier>{f9a2744a-c612-4313-94f6-ca3e2023ec5f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GdiRenderer\RenderStruct\RenderObject\Axis_Widget">
+      <UniqueIdentifier>{babe96b5-a837-4e93-8cd3-f3f7413301c8}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="GDIRenderer.cpp">
+      <Filter>GdiRenderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Transform.cpp">
+      <Filter>Math\Transform</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>GdiRenderer\RenderStruct\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="inputsystem.cpp">
+      <Filter>InputSetting</Filter>
+    </ClCompile>
+    <ClCompile Include="testdirectinput.cpp">
+      <Filter>InputSetting</Filter>
+    </ClCompile>
+    <ClCompile Include="MainEntry.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Cube.cpp">
+      <Filter>GdiRenderer\RenderStruct\RenderObject\Cube</Filter>
+    </ClCompile>
+    <ClCompile Include="Triangle.cpp">
+      <Filter>GdiRenderer\Rasterizer</Filter>
+    </ClCompile>
+    <ClCompile Include="Rasterizer.cpp">
+      <Filter>GdiRenderer\Rasterizer</Filter>
+    </ClCompile>
+    <ClCompile Include="Grid.cpp">
+      <Filter>GdiRenderer\RenderStruct\RenderObject\Grid</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderObject.cpp">
+      <Filter>GdiRenderer\RenderStruct\RenderObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Cam_Obj.cpp">
+      <Filter>GdiRenderer\RenderStruct\RenderObject\Camera%28Object%29</Filter>
+    </ClCompile>
+    <ClCompile Include="Axis_Widget.cpp">
+      <Filter>GdiRenderer\RenderStruct\RenderObject\Axis_Widget</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="GDIRenderer.h">
+      <Filter>GdiRenderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrix.hpp">
+      <Filter>Math\Matrix</Filter>
+    </ClInclude>
+    <ClInclude Include="Transform.h">
+      <Filter>Math\Transform</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderStruct.hpp">
+      <Filter>GdiRenderer\RenderStruct</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>GdiRenderer\RenderStruct\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="testdirectinput.h">
+      <Filter>InputSetting</Filter>
+    </ClInclude>
+    <ClInclude Include="Cube.h">
+      <Filter>GdiRenderer\RenderStruct\RenderObject\Cube</Filter>
+    </ClInclude>
+    <ClInclude Include="Triangle.h">
+      <Filter>GdiRenderer\Rasterizer</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer.h">
+      <Filter>GdiRenderer\Rasterizer</Filter>
+    </ClInclude>
+    <ClInclude Include="Grid.h">
+      <Filter>GdiRenderer\RenderStruct\RenderObject\Grid</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderObject.h">
+      <Filter>GdiRenderer\RenderStruct\RenderObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Cam_Obj.h">
+      <Filter>GdiRenderer\RenderStruct\RenderObject\Camera%28Object%29</Filter>
+    </ClInclude>
+    <ClInclude Include="Axis_Widget.h">
+      <Filter>GdiRenderer\RenderStruct\RenderObject\Axis_Widget</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="레스터라이저.txt">
+      <Filter>GdiRenderer\Rasterizer</Filter>
+    </Text>
+    <Text Include="노말벡터.txt">
+      <Filter>GdiRenderer</Filter>
+    </Text>
+  </ItemGroup>
+</Project>
