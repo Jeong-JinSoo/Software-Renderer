@@ -6,7 +6,7 @@ Transform::Transform()
 	,scalX(1),scalY(1),scalZ(1)
 	,parent(nullptr)
 {
-	transformMatrix.ResetMartix();
+	transformMatrix.SetIdentity();
 }
 
 Transform::~Transform()
@@ -17,7 +17,7 @@ Transform::~Transform()
 void Transform::Update()
 {
 	Matrix result;
-	result.ResetMartix();
+	result.SetIdentity();
 	result = Translate() * Rotation() * Scale(); // S * R * T 
 	transformMatrix = result;
 
@@ -72,17 +72,17 @@ Matrix Transform::GetTransformMatrix()
 
 Point Transform::PointmultiplyMatrix(const Point& m)
 {
-	return transformMatrix.PointmultiplyMatrix(m);
+	return m*transformMatrix;
 }
 
 Point Transform::PointPlusMatrix(const Point& m)
 {
-	return transformMatrix.PointPlusMatrix(m);
+	return m * transformMatrix;
 }
 
 Point Transform::PointMinusMatrix(const Point& m)
 {
-	return transformMatrix.PointMinusMatrix(m);
+	return m * transformMatrix;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////

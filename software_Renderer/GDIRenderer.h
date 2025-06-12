@@ -33,6 +33,11 @@ private:
 	void DrawDot(float posx, float posy, _In_ COLORREF color);
 	void DrawTextM(float xpos, float ypos, const wchar_t* text, ...);
 
+	// 인풋이 렌더함수에 있는건 이상한거지만 일단 오브젝트 관리용
+	// update가 렌더에 종속되어 있기도 하고 일단 구현이 먼저니까 일단 두고
+	/// 나중에 꼭 챙겨서 옮겨놔라!
+	void Inputer();
+
 private:
 	HWND* phwnd;
 

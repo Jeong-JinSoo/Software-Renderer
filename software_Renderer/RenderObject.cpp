@@ -41,7 +41,7 @@ void RenderObject::Initialize()
 
 			// 외적으로 노말 벡터를 구한다 -> 단위 벡터로 정규화
 			// 플렛 셰이딩용 노말을 얻을 수 있다.
-			Point faceN = Point::Normalize(Point::CrossR(e1, e2));
+			Point faceN = Point::Normalize(Point::Cross(e1, e2));
 
 			vertecies[i0].vNormal += faceN;
 			vertecies[i1].vNormal += faceN;
@@ -74,7 +74,6 @@ void RenderObject::Update()
 	Matrix result;
 
 	transform.Update();
-	//finalTransform = camProj * camView * transform.GetTransformMatrix();
 	finalTransform = transform.GetTransformMatrix() * camView * camProj;
 
 	// 노말 연산
@@ -84,7 +83,7 @@ void RenderObject::Update()
 		// 모델과 뷰 합성
 		Matrix modelView = transform.GetTransformMatrix() * camView;
 		// 모델 뷰 역행 구하기
-		modelView.inverseMatrix();
+		modelView.Inverse();
 
 		normalMatrix = modelView.Transposed();
 	}
@@ -118,12 +117,12 @@ Vertex RenderObject::UpdateVertex(int index)
 	if (index == -1)
 	{
 		// Wt * Vt * Pt 연산 결과
-		ver_result = finalTransform.PointmultiplyMatrix(ver_result);
+		ver_result = ver_result * finalTransform;
 	}
 
 	else
 	{
-		ver_result = finalTransform.PointmultiplyMatrix(vertecies[index].vPoint);
+		ver_result = vertecies[index].vPoint * finalTransform;
 		prevClipW[index] = ver_result.w;
 	}
 
@@ -134,12 +133,12 @@ Vertex RenderObject::UpdateVertex(int index)
 	ver_result.w /= ver_result.w;
 
 	// 뷰포트 곱하기
-	ver_result = pcam->GetViewPort().PointmultiplyMatrix(ver_result);
+	ver_result = ver_result * pcam->GetViewPort();
 
 	/// 노말 변환
 	// (inverse - tranpose -> 정규화)
 	//normalMatrix = transpose(inverse(worldviewMatrix))
-	nor_result = normalMatrix.PointmultiplyMatrix(nor_result);
+	nor_result = nor_result * normalMatrix;
 	nor_result.Normalize(nor_result);
 
 	result.vPoint = ver_result;

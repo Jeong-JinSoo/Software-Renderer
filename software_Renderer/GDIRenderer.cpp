@@ -43,7 +43,7 @@ void GDIRenderer::Initialize()
 	objects[0]->transform.SetPosition(0, 0, 0);
 
 	// axis_Widget
-	objects[2]->transform.SetPosition(-4, 0, 0);
+	objects[2]->transform.SetPosition(0, 0, -3);
 
 	/// 레스터 라이저를 더하면서 새로 추가된 프레임 버퍼&뎁스 버퍼
 
@@ -81,10 +81,11 @@ bool convertcam = true;
 
 void GDIRenderer::Render()
 {
-	input->Update(0);
+	Inputer();
 
 	//cube.transform.SetPosition(posx, posy, 0);
-	//cube.transform.SetPosition(controlvaluex, controlvaluey, controlvaluez);
+	//objects[0]->transform.SetPosition(controlvaluex, controlvaluey, controlvaluez);
+	//objects[0]->transform.SetScale(controlvaluex, controlvaluey, controlvaluez);
 	objects[0]->transform.SetRotation(controlvaluex, controlvaluey, controlvaluez);
 
 	//cam.pcam->LookAt(Point(controlvaluex, controlvaluey, controlvaluez),Point(),Point(0,1,0));
@@ -315,4 +316,37 @@ void GDIRenderer::DrawTextM(float xpos, float ypos, const wchar_t* format, ...)
 
 	// 배경 모드를 다시 OPAQUE로 설정 (기본값)
 	SetBkMode(memdc, OPAQUE);
+}
+
+void GDIRenderer::Inputer()
+{
+	input->Update(0.0);
+
+	if (input->KeyInput(KEY::UP))
+	{
+		controlvaluey += 1;
+	}
+	else if (input->KeyInput(KEY::DOWN))
+	{
+		controlvaluey -= 1;
+	}
+
+	if (input->KeyInput(KEY::LEFT))
+	{
+		controlvaluex -= 1;
+	}
+	else if (input->KeyInput(KEY::RIGHT))
+	{
+		controlvaluex += 1;
+	}
+
+	if (input->KeyInput(KEY::HOME))
+	{
+		controlvaluex -= 1;
+	}
+	else if (input->KeyInput(KEY::END))
+	{
+		controlvaluex += 1;
+	}
+
 }
