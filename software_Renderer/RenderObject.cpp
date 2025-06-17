@@ -95,14 +95,14 @@ void RenderObject::Update()
 	}
 }
 
-float RenderObject::GetPrevClipW(int index)
+float RenderObject::GetPrevClipW(int index) const
 {
 	return prevClipW[index];
 }
 
-std::vector<float>* RenderObject::GetPrevClipW()
+std::vector<float> RenderObject::GetPrevClipW() const
 {
-	return &prevClipW;
+	return prevClipW;
 }
 
 Vertex RenderObject::UpdateVertex(int index)
@@ -147,12 +147,12 @@ Vertex RenderObject::UpdateVertex(int index)
 	return result;
 }
 
-int RenderObject::ReturnIndex(int i)
+int RenderObject::ReturnIndex(int i) const
 {
 	return indices[i];
 }
 
-int RenderObject::GetTriangleCount()
+int RenderObject::GetTriangleCount() const
 {
 	int result = indices.size() / 3;
 	return result;

@@ -30,15 +30,15 @@ public:
 	virtual void Update();
 	
 	// 오브젝트의 투영나누기 이전 W값을 가져옴(특정인덱스)
-	virtual float GetPrevClipW(int index);
+	virtual float GetPrevClipW(int index) const;
 
 	// 오브젝트의 투영나누기 이전 W값을 가져옴(전체)
-	std::vector<float>* GetPrevClipW();
+	std::vector<float> GetPrevClipW() const;
 
 	// 특정 인덱스의 버텍스 값을 반환함
-	virtual int ReturnIndex(int i);
+	virtual int ReturnIndex(int i) const;
 
-	virtual int GetTriangleCount();
+	virtual int GetTriangleCount() const;
 
 private:
 	virtual Vertex UpdateVertex(int index);

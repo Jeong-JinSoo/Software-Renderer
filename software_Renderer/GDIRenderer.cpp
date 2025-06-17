@@ -1,4 +1,5 @@
 #include "GDIRenderer.h"
+#include "BMP_Printer.hpp"
 
 extern int windowsizeL;
 extern int windowsizeH;
@@ -27,6 +28,7 @@ void GDIRenderer::Initialize()
 	objects.push_back(new Cube());
 	objects.push_back(new Grid());
 	objects.push_back(new Axis_Widget());
+	objects.push_back(new Cube());
 
 	cam.pcam->LookAt(Point(0, 5, -10), Point(0, 0, 0), Point(0, 1, 0));
 	//cam.transform.SetPosition(0, 5, 10);
@@ -41,6 +43,8 @@ void GDIRenderer::Initialize()
 	}
 	//cube
 	objects[0]->transform.SetPosition(0, 0, 0);
+
+	objects[3]->transform.SetScale(0.1f, 0.1f, 0.1f);
 
 	// axis_Widget
 	objects[2]->transform.SetPosition(-3, 0, 0);
@@ -104,50 +108,16 @@ void GDIRenderer::Render()
 		// 그리는게 면이라면
 		if (obj->type == RenderType::Face)
 		{
+			Rasterizer::RasterizerTriangle(*obj, frameBuffer, depthBuffer, screenWidth, screenheight);
 
-			// 화면에 그릴 삼각형 목록 만들기
-			std::vector<Triangle> tris;
-			tris.reserve(12);	// 큐브의 삼각형은 12개
-
-			for (int ti = 0; ti < 12; ++ti)
-			{
-				Triangle tri;
-				for (int k = 0; k < 3; ++k)
-				{
-					int index = obj->ReturnIndex(ti * 3 + k);
-
-					Point p = obj->finalVertex[index].vPoint;
-					Point n = obj->finalVertex[index].vNormal;
-					tri.v[k].x = p.x;
-					tri.v[k].y = p.y;
-					tri.v[k].z = p.z;
-					tri.v[k].nx = n.x;
-					tri.v[k].ny = n.y;
-					tri.v[k].nz = n.z;
-					tri.v[k].wInv = obj->GetPrevClipW(index);
-					tri.v[k].u = obj->vertecies[index].u;
-					tri.v[k].v = obj->vertecies[index].v;
-				}
-				tris.push_back(tri);
-			}
-
-			// (기존 DrawLine 블록 대신) 레스터라이저 호출
-			//Clear(frameBuffer/depthBuffer) 후
-			for (auto& tri : tris)
-			{
-				Rasterizer::RasterizerTriangle(tri, frameBuffer, depthBuffer, screenWidth, screenheight);
-			}
+			BMP_Printer::SaveFrameBufferAsBMP(frameBuffer, screenWidth, screenheight, "output_color.bmp");
+			BMP_Printer::SaveDepthBufferAsBMP(depthBuffer, screenWidth, screenheight, "output_depth.bmp");
 		}
 
 		// 그리는게 선이라면
 		else if (obj->type == RenderType::Line)
 		{
-			for (int i = 0; i < obj->indices.size(); i += 2)
-			{
-				Point v0 = obj->finalVertex[obj->indices[i]].vPoint;
-				Point v1 = obj->finalVertex[obj->indices[i + 1]].vPoint;
-				Rasterizer::RasterizerLine(screenWidth, screenheight, v0, v1, frameBuffer, depthBuffer, obj->finalVertex[obj->indices[i + 1]].color);
-			}
+			//Rasterizer::RasterizerLine(*obj, screenWidth, screenheight, frameBuffer, depthBuffer);
 		}
 	}
 

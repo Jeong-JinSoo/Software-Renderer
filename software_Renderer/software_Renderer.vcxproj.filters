@@ -43,6 +43,9 @@
     <Filter Include="GdiRenderer\RenderStruct\RenderObject\Axis_Widget">
       <UniqueIdentifier>{babe96b5-a837-4e93-8cd3-f3f7413301c8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GdiRenderer\BMP_Printer">
+      <UniqueIdentifier>{1640036f-08d5-4f31-8281-599c12e88514}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GDIRenderer.cpp">
@@ -124,6 +127,9 @@
     </ClInclude>
     <ClInclude Include="Axis_Widget.h">
       <Filter>GdiRenderer\RenderStruct\RenderObject\Axis_Widget</Filter>
+    </ClInclude>
+    <ClInclude Include="BMP_Printer.hpp">
+      <Filter>GdiRenderer\BMP_Printer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
